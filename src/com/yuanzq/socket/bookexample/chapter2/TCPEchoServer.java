@@ -22,7 +22,6 @@ public class TCPEchoServer {
 
     while (true) { // Run forever, accepting and servicing connections
       Socket clntSock = servSock.accept();     // Get client connection
-
       SocketAddress clientAddress = clntSock.getRemoteSocketAddress();
       System.out.println("Handling client at " + clientAddress);
       
