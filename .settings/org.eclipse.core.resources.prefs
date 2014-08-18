@@ -1,8 +1,10 @@
 eclipse.preferences.version=1
 encoding//src/com/yuanzq/jdk/collection/SelfArrayList.java=UTF-8
 encoding//src/com/yuanzq/jdk/collection/SelfLinkedList.java=UTF-8
+encoding//src/com/yuanzq/jvm/gc/ClassCinit.java=UTF-8
 encoding//src/com/yuanzq/jvm/gc/GCTest.java=UTF-8
 encoding//src/com/yuanzq/jvm/oomtest/MMODemo.java=UTF-8
+encoding//src/com/yuanzq/jvm/oomtest/OOMTest.java=UTF-8
 encoding//src/com/yuanzq/thread/EarlyNotify.java=UTF-8
 encoding//src/com/yuanzq/thread/ThreadCaseDemo03.java=UTF-8
 encoding//src/com/yuanzq/thread/Volatile.java=UTF-8
