@@ -32,7 +32,7 @@ public class UDPEchoClientTimeout {
     DatagramPacket receivePacket =                              // Receiving packet
         new DatagramPacket(new byte[bytesToSend.length], bytesToSend.length);
 
-    int tries = 0;      // Packets may be lost, so we have to keep trying
+		int tries = 0;      // Packets may be lost, so we have to keep trying
     boolean receivedResponse = false;
     do {
       socket.send(sendPacket);          // Send the echo string
@@ -54,6 +54,6 @@ public class UDPEchoClientTimeout {
     } else {
       System.out.println("No response -- giving up.");
     }
-    socket.close();
+		socket.close();
   }
 }
