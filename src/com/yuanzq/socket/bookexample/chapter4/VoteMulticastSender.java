@@ -5,6 +5,10 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import com.yuanzq.socket.bookexample.chapter3.VoteMsg;
+import com.yuanzq.socket.bookexample.chapter3.VoteMsgCoder;
+import com.yuanzq.socket.bookexample.chapter3.VoteMsgTextCoder;
+
 
 public class VoteMulticastSender {
 

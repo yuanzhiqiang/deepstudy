@@ -6,6 +6,9 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.Arrays;
 
+import com.yuanzq.socket.bookexample.chapter3.VoteMsg;
+import com.yuanzq.socket.bookexample.chapter3.VoteMsgTextCoder;
+
 
 public class VoteMulticastReceiver {
 
