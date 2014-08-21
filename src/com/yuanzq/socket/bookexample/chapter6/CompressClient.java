@@ -1,3 +1,5 @@
+package com.yuanzq.socket.bookexample.chapter6;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -5,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class CompressClientNoDeadlock {
+public class CompressClient {
 
   public static final int BUFSIZE = 256;  // Size of read buffer
 
