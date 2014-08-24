@@ -1,6 +1,7 @@
 package com.yuanzq.socket.serilizable;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 import com.yuanzq.socket.bookexample.chapter3.VoteMsg;
 
@@ -18,4 +19,12 @@ public class VoteMsgTextSerilizable implements VoteMsgSerilizable {
 		return null;
 	}
 
+	
+	
+	
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		double d = scanner.nextDouble();
+		System.out.println();
+	}
 }
