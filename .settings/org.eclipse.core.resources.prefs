@@ -5,6 +5,7 @@ encoding//src/com/yuanzq/jvm/gc/ClassCinit.java=UTF-8
 encoding//src/com/yuanzq/jvm/gc/GCTest.java=UTF-8
 encoding//src/com/yuanzq/jvm/oomtest/MMODemo.java=UTF-8
 encoding//src/com/yuanzq/jvm/oomtest/OOMTest.java=UTF-8
+encoding//src/com/yuanzq/jvm/tooltest/JConsoleTest.java=UTF-8
 encoding//src/com/yuanzq/socket/basicencode/BasicDataEncoding.java=UTF-8
 encoding//src/com/yuanzq/socket/framer/DelimFramer.java=UTF-8
 encoding//src/com/yuanzq/socket/framer/Framer.java=UTF-8
