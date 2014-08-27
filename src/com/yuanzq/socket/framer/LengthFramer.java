@@ -8,7 +8,7 @@ public class LengthFramer implements Framer {
 
 	DataInputStream ds = null;
 	
-	LengthFramer(DataInputStream ds){
+	public LengthFramer(DataInputStream ds){
 		this.ds = ds;
 	}
 	@Override
