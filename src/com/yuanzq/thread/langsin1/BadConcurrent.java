@@ -10,7 +10,7 @@ public class BadConcurrent implements Runnable {
 
 	// static{
 	// try {
-	// Thread.sleep(2000);
+	// Thread.sleep(2000);aa
 	// } catch (InterruptedException e) {
 	// e.printStackTrace();
 	// }
