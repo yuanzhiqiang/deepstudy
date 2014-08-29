@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class UDPMulticastReceiver {
 
 	
-	
+	//aaa
 	public static void main(String[] args) throws Exception {
 		int MAXSIZE = 1024;
 		byte[] buf = new byte[MAXSIZE];
