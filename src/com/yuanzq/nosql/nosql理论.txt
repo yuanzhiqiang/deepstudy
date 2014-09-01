@@ -1,0 +1,138 @@
+nosql引入：
+ 1.大数据时代  3v  海量volume  多样性Variety   实时 Velocity
+ 2.系统需求（互联网的应用----淘宝、天猫)
+       高并发、海量结构化非结构化数据的存储、高可扩展性、高可用性
+ 3.传统的数据库解决方案  :  数据的切分（水平切分、垂直切分)
+ 4.nosql---->易扩展、灵活的数据模型、高可用、大数据量（就是因为这些而生)
+    nosql ----> not only sql
+  5.当下的应用应该是sql  和 nosql 一起使用
+  案例：阿里巴巴中文站 商品信息，商品信息如何存放:
+            商品的信息:
+	           基本信息如名称、价格、编号等------>关系型数据库存放(mysql、Oracle)
+		   商品描述、评价信息(文字比较多的)---->文档类的数据更适合存放在文档数据库中如Mongodb
+		   商品图片信息----->分布式的文件系统中---->tfs、gfs、nfs、hdfs、ext3/4
+           其它信息:
+	           商品有关键字----->搜索引擎当中（ISearch)
+		   商品存在热点数据---->内存数据库(Memcached、redis)
+		   商品和价格计算相关---->外部数据库接口（如支付宝)
+	           ... ...
+总结:大型的互联网应用（海量数据、高并发访问、多样的数据种类的）的情况
+       会采用异构的数据源
+问题：给开发带来很多的问题需要去解决(统一数据服务平台)
+          数据源改造而数据服务平台不需要大面积重构
+
+nosql 数据模型
+      1.聚合模型（key/value,bson,列族)
+      2.图
+      3.案例：电子商务网站，把商品卖给消费者。存储用户信息、商品目录
+               、订单、收货地址、账单地址、付款方式等等
+           关系型数据库---->ER图    1:n   n:1   1:1   n:n这样的关系，主外键等方式
+	   聚合模型:（bson格式)
+	     //int customers
+{
+  "id":1,
+  "name":"Martin",
+  "billingAddress":[{"city":"Chicago"}]
+}
+//int orders
+{
+  "id":99,
+  "customerId":1
+  "orderItems":[
+    {
+     "productId":27,
+     "price":32.45
+     "productName":"NoSQL Distilled"
+    }
+   ],
+  "shippingAddress":[{"city":"chicago"}]
+  "orderPayment":[
+    {
+     "ccinfo":"1000-1000-1000-1000",
+     "txnId":"abelif879rft",
+     "billingAddress":{"city":"Chicago"}
+    }
+   ],
+}
+========================================================================
+
+{
+  "customer":{
+    "id":1,
+    "name":"Martin",
+    "billingAddress":[{"city":"Chicago"}],
+    "orders":[
+      {
+       "id":99,
+       "customerId":1,
+       "orderItems":[
+        {
+           "productId":27,
+           "price":32.45,
+           "productName":"NOSQL"
+         }
+       ],
+       "shippingAddress":[{"city":"chicago"}]
+       "orderPayment":[
+         {
+           "ccinfo":"1000-1000-1000-1000",
+           "txnid":"abelif879rft",
+           "billingAddress":{"city":"Chicago"}
+         }
+        ],
+      }
+     ]
+   }
+}
+
+
+nosql分类
+    1.key-value结构的   典型的BerkeleyDB(新浪就在用)
+                                               LevelDB
+					       Memcached（新浪、阿里、百度...)
+					       Redis(阿里、百度...)
+    2.Document文档数据库(bson格式)  典型的 Mongodb
+                                                                        CouchDB
+    3.Column-Family                            典型的Hbase、Cassandra(纯java的)
+    4.Graph(图数据库--->存放的是关系)  Neo4j（纯java)、FlockDB等 
+
+
+
+
+ CAP+BASE原理
+ 1.在分布式数据库中CAP原理
+    C--->强一致性     A---->高可用性    P---->分布式容忍性
+    在分布式的情况下3只能满足其2牺牲两外一个。
+    CA 传统数据库
+    AP 大多数网站架构的选择
+    CP Redis、Mongodb
+
+    注意：分布式架构的时候必须做出取舍。一致性和可用性之间取一个平衡。
+              多余大多数web应用，其实并不需要强一致性。因此牺牲一致性换取
+	      可用性，这是目前分布式数据库产品的方向
+2.Base 原理 ---->AP的衍生
+   基本可用、软事务、最终一致性（不一致窗口)
+   （因果一致性
+   读己之所写
+   会话一致性）
+
+   案例:ebay  竞拍(采用base)
+     出价竞拍:原子性不是重点，更多的是在拍卖最后的几秒钟，不要阻塞任何
+                出价人。在显示时刻而不是在出价时刻计算出最好出价人和最高出价
+		 。所有的出价都被插入到子表中，每次显示产品，再重新取回出价。
+		 用业务逻辑解决。背后的问题就是一致性的问题。采用BASE而不是ACID。
+		 出价表和出价视图表之间不必服从ACID
+
+
+使用场景
+一  key/value
+    适合存储用户信如会话、配置文件、参数购物车等等。一般都会跟ID挂钩
+    只能通过key直接得到value,不能通过value进行查询
+二 文档数据库
+    日志、分析、文档（博客等)  数据库并没有固定的模式。
+    每个文档是独立，文档间的操作就不适合了。
+三、列数据库
+    日志、博客平台
+ 四、图数据库
+      在一些关系性强的数据库中
+      推荐引擎

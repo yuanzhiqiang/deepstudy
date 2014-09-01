@@ -1,0 +1,45 @@
+1.Memcached其它命令
+    cas 命令
+   cas key 32(类型) 0(有效时间) s (长度） 2（版本号）
+   version
+   flush_all命令
+   quit命令
+
+   让Memcached服务停止
+   echo stats | nc localhost 11211查看pid 然后kill pid
+
+2.统计命令--->查看Memcached内部的情况
+  stats
+  stats settings
+  stats slabs
+  stats items
+  注意:Memcached-tool这样的工具 也来专门帮我们做统计分析
+         perl写的脚本
+	 perl memcached-tool localhost:11211 stats
+	                                                                 dump
+									 move
+									 display
+3.Unix下的 daemon
+   Socket机制
+       non-blocked:非阻塞
+       libevent异步事件处理
+   内存管理机制
+    slab:内存分配机制
+    LRU:对象清除机制
+    Hash机制，快速定位检索item
+
+    多线程机制   编译  ./config -enable-threads
+
+    特殊的内存分配：每个对象最大只能1m
+     Slab内存处理机制:
+          提前分配大内存1MB，再进行小对象填充chunk
+	  避免大量重复的初始化和清理——-->减轻内存管理的负担
+	  避免频繁的malloc/free--->系统碎片
+     懒惰检测机制:
+          不检测item对象是否超时
+	  get时检查item对象是否应该删除
+     懒惰删除机制:
+         删除item对象时，不释放内存，作删除标记，指针标识，下次分配直接使用
+	 slab == page
+
+	 slab/chunk/item

@@ -1,0 +1,29 @@
+Memcached实际上就是两次Hash算法
+   第一次hash算法是用来定位Memcached实例的
+   第二次hash算法是底层HashMap中的hash算法
+
+Hash算法
+     1.根据余数来进行计算(其实java中的HashMap的hash算法也是用的这种方式)
+     2.一致性hash算法
+         C的客户端  --->libMemcached已经实现了该功能，C的开发人员直接使用它。
+	 新浪----->Memcachedb  实现了持久化功能
+
+	 java的客户端
+	  a官方的 memcached client for java
+	     比较稳定
+	     用了jdk比较早的版本，性能稍差，并且使用的BIO
+	  b.spyMemcached
+	     NIO,线程池框架
+	     一致性hash
+	     稳定性差，报timeout异常
+	  c.xMemcached 
+	      java nio
+	      java 线程池
+	      性能比spyMemcached要好
+	      并且比较稳定，且和spring等框架能够很好的结合使用
+	      一致性hash
+	  d.淘宝包装的java客户端
+	    java nio
+	    线程池框架
+	    cluster机制
+	    结合本地缓存
