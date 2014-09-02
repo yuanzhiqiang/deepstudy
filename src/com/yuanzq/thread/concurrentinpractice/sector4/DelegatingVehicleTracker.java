@@ -1,4 +1,4 @@
-package com.yuanzq.thread.concurretinpractice.sector4;
+package com.yuanzq.thread.concurrentinpractice.sector4;
 
 import java.util.Collections;
 import java.util.HashMap;
