@@ -3,6 +3,8 @@ package com.yuanzq.thread.langsin2;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Test_Executor {
 
@@ -25,9 +27,10 @@ public class Test_Executor {
 			
 		};
 		
-		executor.execute(task);
-		ExecutorService service = (ExecutorService) executor;
-		service.shutdown();
-		
+//		executor.execute(task);
+//		ExecutorService service = (ExecutorService) executor;
+//		service.shutdown();
+		ScheduledExecutorService sService = (ScheduledExecutorService)executor;
+		sService.scheduleAtFixedRate(task, 10, 10, TimeUnit.SECONDS);
 	}
 }
