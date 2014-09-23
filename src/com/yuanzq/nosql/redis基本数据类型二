@@ -1,0 +1,55 @@
+List数据类型
+   按照插入顺序排序的字符串链表，可以在其头部(left)和尾部(right)添加新元素
+   在插入数据时，如果键不存在，创建新的链表
+   链表中所有元素被移除，该键也就不存在了。
+   链表的操作无论是头和尾效率都是极高的,哪怕链表中有百万个元素
+   如果是链表中间的元素进行操作，效率极其低
+   a.lpush/lpushx/lrange
+     lpush mykey a b c d
+     lrange mykey 0 -1
+     lrange mykey 0 2
+     lpushx mykey e
+
+   b.lpop/llen
+   c.lrem/lset/lindex/ltrim
+   lpush mykey a b c d a c
+   lrem mykey 2 a  从left往right删除2个值等于a的元素，返回的值为实际删除的数量
+   ltrim mykey 0 1 从右边起删除一个元素
+   c.linsert
+      lpush mykey a b c d e
+      linsert mykey before a a1
+      linsert mykey after e e2
+   d.rpush/rpushx/rpop/rpoplpush
+     rpoplpush 弹出一个之后，放入另外一个链表当中
+
+
+ Hashes数据类型
+   redis的Hashes类型看成是具有String作为key,value又是一个string value这样的map
+   非常适合存储值对象的信息
+   a.hset/hget/hdel/hexists/hlen/hsetnx
+   b.hincrby
+   c.hgetall/hkeys/hvals/hmget/hmset
+
+
+Set数据类型
+    key,value是Set结构，不能存放重复对象
+    1.sadd/smembers/scard/sismember
+    2.spop/srem/srandmember/smove
+    3.特殊的操作，可以做多个set间的聚合操作，完全在服务器端完成，效率较高
+       sdiff/sdiffstore/sinter/sinterstore/sunion/sunionstore
+     场景 
+        1)可以使用Redis的Set数据类型来跟踪唯一性数据
+	   比如访问某一博客的唯一的IP地址信息
+	2）利用聚合的功能
+	    比如 所有购买某一电子设备的客户id被存储在一个指定的Set中
+	    购买另外一种电子设备的客户id被存储在另外一个指定Set中
+	    如果要查看买了这两种商品的用户的id，只要用sinter的操作即可
+
+
+Sorted-Set数据类型
+    在set基础上，加一个积分，并根据积分排序
+ 1.zadd/zcard/zcount/zrem/zincrby/zscore/zrange/zrank
+ 2.zrangebyscore/zremrangebyrank/zremrangebyscore
+ 3.zrevrange/zrevrangebyscore/zrevrank
+ 用于大型在线游戏的积分排行榜
+ 也可以用于构建索引数据
