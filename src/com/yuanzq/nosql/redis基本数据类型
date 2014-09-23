@@ -1,0 +1,78 @@
+redis  (key/value) 分布式内存数据库
+ 1.支持了更丰富的数据类型（string/list/set/hashes/sorted-set)
+ 2.支持持久化机制
+ 3.支持master/slaver    slaver升级
+
+ redis安装（windows/linux)
+ 1.linux下的
+     解压   tar -xzvf 文件名.tar.gz
+     进入目录   make
+    
+     修改redis.conf文件    daemonize no 改成yes
+
+     开启服务
+         进入src目录   ./redis-server /etc/redis.conf
+     连接服务
+         ./redis-cli
+2.windows下安装 （下windows版本的)
+   直接解压即可
+   解压目录后，下面可能没有redis.conf文件，请去官网下载该文件 or 把Linux版的redis.conf文件直接拷贝过来
+   redis-server redis.conf  --->启动
+   redis-cli
+3.redis有更丰富的数据类型
+   value可以是string/list/hashes/set/sorted-set 
+   每种类型使用的基本命令和使用的场景
+   3.1string类型
+         字符串类型是redis最为基础的类型，在redis中是二进制安全的
+	 （可以是任意数据格式，如JPEG图像数据或json格式数据等)
+	 redis中字符串value最多可以是512M
+
+	 string类型的基本命令
+	  a.set/get/append/strlen
+	     append mykey "hello"
+	     append mykey "world"
+	     get mykey
+	     set mykey "this is a test"
+	     get mykey
+	     strlen mykey
+	  b.incr/desr/incrby/descrby
+	     set mykey 20
+	     incr mykey
+	     decr mykey
+	     del mykey
+	     decr mykey  对空值执行递减操作，其原值被设定为0，递减后的值是-1
+	     del mykey
+	     incr mykey 对空值执行递加操作，其原值被设定为0，递加后的值是1
+	     一定要是数字才能进行加减
+	     set mykey 10
+	     descby mykey 5
+	     incrby mykey 20
+	   c.getset命令(注意原子性)
+	      incr mycounter //将计数器的值原子性增1
+	      getset mycounter 0  //获取计数器的同时，并将其设置为新值，这两个操作是原子操作
+	      get mycounter
+	   d.setex
+	      setex mykey 10 "hello"   //过期时间是10秒
+	      ttl mykey查看
+	      expire mykey 时间
+	   e.setnx
+	      setnx mykey "hello"
+	      setnx mykey "world"  //该键已经存在 ，无效
+	   f.setrange/getrange
+	      set mykey "helloworld"
+	      setrange mykey 6 dd //从第六个字节开始替换2个字节(dd只有两个字节)
+	      get mykey
+	      setrange mykey 20 dd //已经超过了key的原有值的长度，该命令将会在末尾补0
+	      get mykey
+	      del mykey
+	      setrange mykey 2 dd
+	      get mykey
+	      set mykey "0123456789"
+	      getrange mykey 1 2
+	      getrange mykey 1 20
+	    g.mset/mget/msetnx
+	      mset key1 "hello" key2 "world"
+	      mget key1 key2
+	      msetnx key3 "aa" key4 "bb"
+	      mget key3 key4
+	      msetnx key4 "cc" key5 "dd" // key4已经存在，所以不能成功
