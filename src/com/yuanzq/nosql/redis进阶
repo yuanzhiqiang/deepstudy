@@ -1,0 +1,70 @@
+redis-进阶
+1.key命令操作
+    keys my*
+    del mykey mykey2
+    exists mykey
+    move mysetkey 1 --->move mysetkey去数据库1 redis默认打开的是数据库0 
+                                         select 0 打开0数据库
+					 select 1打开1
+   rename oldkey newkey
+   renamenx oldkey newkey
+   ---------------------------------------------------------------
+    persist/expire/ttl
+    ------------------------------------------------------
+    type mykey
+    randomkey
+
+2.redis的事务机制
+   1）在redis当中所有命令都将会被串行化的顺序执行。
+   事务执行期间，Redis不会为其它任何客户端请求提供任何服务，其它客户端被阻塞，并发比较差。
+   2）和关系型数据库不一样的地方（关系型数据在同一个事务中，要么全部成功，要么全部失败)
+        但是redis同一个事务中如果有一条命令执行失败，其后的命令仍然会被执行
+   3 )Multi  开始事务
+       exec/discard 提交的命令/回滚
+   4)如果客户端和服务器端网络中断,其后所有待执行的语句都不会被服务器执行
+      如果中断是发生在exec命令之后，该事务中所有的命令都会被执行
+
+      基本命令
+         multi
+	 incr t1
+	 incr t2
+	 exec
+	 ----------
+	 multi
+	 set a 3
+	 lpop a
+	 set a 4
+	 exec
+	 get a
+	 --------------
+	 set t2 tt
+	 multi
+	 set t2 newtt
+	 discard
+	 get t2
+	 ----------------
+	 事务的直接操作用的比较少，将来在复制机制中还需要用到其中的一些原理
+
+
+3.redis   Master/Slaves
+   主机宕掉之后 备机能够备份数据， redis较新的版本也支持主宕掉之后备机自动
+   升级会主对外提供操作
+   1）同一个Master可以有多个Slave
+   2 ) Slave同样可以接收其他slaves的连接和同步请求，那么该slave作为了链条中
+        下一个的master,减轻master的写压力
+   3）Master Slave是以非阻塞的方式为slave提供服务
+        说明master-slave在同步时，客户端任然可以提交请求
+        但是如果此时有查询请求，查询出的是同步前的数据
+   4）一般master/slave集群中，Master做写为主，Slave只做读
+   master/slave配置非常简单
+      a.通过slaveof ip port这样的命令---->每次与master断开之后，都需要重新连接
+      b.可以通过配置文件的方式redis.conf这个文件
+         断开之后，启动后会默认连接
+  Replication的工作原理
+      在slave启动并连接到master后，会发送一个SYNC命令.
+      Master接到命令启动后台的存盘进程，同时收集所有接收到的用于修改数据集命令，
+      在后台进程执行完毕之后，master将传送整个数据文件到slave,以完成一次完全同步。
+      而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中。---》全部复制的过程
+      此后，Master继续将新的所有收集到的修改命令依次传给slave,完成同步。---》增量复制过程
+      slave可以自动会手动（命令）重新连接master(slave宕机or断开的时候or重启的时候)
+      ,但是只要是重新连接master,一次完全同步（全量复制)将被自动执行
