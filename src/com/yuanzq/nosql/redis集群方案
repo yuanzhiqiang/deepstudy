@@ -1,0 +1,62 @@
+1.在线扩容
+   redis作者提出了preSharding的方案
+   在同一台机器上部署多个redis实例.
+   拆分过程如下:
+     a.在新机器上启动好对应端口的redis实例
+     b.配置新端口为待迁移端口的从库
+     c.待复制完成，与主库完成同步后，切换所有客户端配置到新的从库的端口
+     d.配置从库为新的主库
+     e.移除老的端口实例
+     f.重复上述过程迁移好所有的端口到指定服务器上
+
+   拆分的过程最好是访问的最低峰
+
+2.redis的代理   twemproxy（一种数据库的中间件 也叫nutcracker)
+   不仅可以做redis的代理也可以做memcached的代理
+   安装---->
+          首先要安装autoconf下载2.6以上的版本
+	  tar -zxvf autoconf-2.69.tar.gz
+	  cd autoconf-2.69
+	  ./configure
+	  make
+	  make install
+
+      ---》安装twemproxy
+           unzip twemproxy-master --->mv twemproxy-master twemproxy
+	   cd twemproxy
+	   CFLAGS="-ggdb3 -O0" autoreconf -fvi && ./configure --enable-debug=log && make && sudo make install
+	   检测配置文件conf目录下nutcracker.yml配置 ./nutcracker -t
+	   启动./nutcracker -d
+	          ./nutcracker -D  or ./nutcracker stat查看状态
+          如果需要去检测一些命令的使用需要掌握shell脚本   安装目下/scripts/redis-check.sh文件
+
+
+	  ./redis-benchmark -n 1000 -c 60 --->测试redis性能的 向redis发送1000个请求，没个请求附带60个客户端
+	  如果把IP PORT换成twemproxy的，就可以测试它的性能。
+
+          通过twemproxy redis挂掉可以自动拆除，恢复后能够自动识别重写使用
+	  如果要写增一台需要些脚本来实现
+	  特性:轻量级、快速  、保持长连接、减少了直接与缓存服务器的连接数量
+	          支持代理到多台服务器上。
+		  数据自动切片到多个服务器上
+		  支持多种hash算法
+
+3.通过keepalived 实现自动快速切换（秒级)
+   需要些shell脚本来实现
+
+   学会keepalived的使用
+ 
+ 4.高可用  高性能集群折中方案
+    master-slave 读写分离  +  keepAlived自动故障切换  实现了高可用
+    master压力很大，我们用代理twemproxy 减少服务器连接数，并且分片。
+    用代理由性能损耗，但是测试redis-benchmark性能损耗很小,由于切分数据了
+    很多时候性能反而更好
+
+    典型的搭建  看图
+      备份采用交叉备份的方式，每个redis在另外一个服务器上都有一个备份。
+      主备redis通过keepalived实现动态故障切换。
+      多个twemproxy配置文件相同，分布算法相同。直接代理每个keepalived的vip.
+      如果需要多个twemproxy,那么在通过haproxy将连接负载到每个twemproxy
+
+
+ 
