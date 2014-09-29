@@ -46,6 +46,7 @@ public class TrackingExecutor extends AbstractExecutorService {
         return new ArrayList<Runnable>(tasksCancelledAtShutdown);
     }
 
+    ThreadFactory
     public void execute(final Runnable runnable) {
         exec.execute(new Runnable() {
             public void run() {
