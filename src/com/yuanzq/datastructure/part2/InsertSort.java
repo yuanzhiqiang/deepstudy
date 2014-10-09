@@ -22,5 +22,7 @@ public class InsertSort {
 				arr[j] = tmp;
 			}
 		}
+		
+		
 	}
 }
