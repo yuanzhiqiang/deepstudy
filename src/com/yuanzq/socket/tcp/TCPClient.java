@@ -8,7 +8,7 @@ public class TCPClient {
 
 	public static void main(String[] args) throws Exception {
 
-		Socket s = new Socket("localhost", 8888);
+		Socket s = new Socket("localhost", 80);
 		OutputStream out = s.getOutputStream();
 		out.write("Hello Server!".getBytes());
 		s.shutdownOutput();
