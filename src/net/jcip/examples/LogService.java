@@ -2,9 +2,11 @@ package net.jcip.examples;
 
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.concurrent.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-import net.jcip.annotations.*;
+import com.yuanzq.thread.concurrentinpractice.annotations.GuardedBy;
+
 
 /**
  * LogService
