@@ -2,7 +2,6 @@ package net.jcip.examples;
 
 import java.util.concurrent.atomic.*;
 
-import net.jcip.annotations.*;
 
 /**
  * LinkedQueue
@@ -11,7 +10,6 @@ import net.jcip.annotations.*;
  *
  * @author Brian Goetz and Tim Peierls
  */
-@ThreadSafe
 public class LinkedQueue <E> {
 
     private static class Node <E> {
@@ -36,14 +34,14 @@ public class LinkedQueue <E> {
             LinkedQueue.Node<E> curTail = tail.get();
             LinkedQueue.Node<E> tailNext = curTail.next.get();
             if (curTail == tail.get()) {
-                if (tailNext != null) {
+                if (tailNext != null) {     //A
                     // Queue in intermediate state, advance tail
-                    tail.compareAndSet(curTail, tailNext);
+                    tail.compareAndSet(curTail, tailNext);  //B
                 } else {
                     // In quiescent state, try inserting new node
-                    if (curTail.next.compareAndSet(null, newNode)) {
+                    if (curTail.next.compareAndSet(null, newNode)) {   //C
                         // Insertion succeeded, try advancing tail
-                        tail.compareAndSet(curTail, newNode);
+                        tail.compareAndSet(curTail, newNode);     //D
                         return true;
                     }
                 }
